@@ -1,12 +1,11 @@
-/*/
-
+/code*/
 
 
 #from Windows-Progamming
-!/*/*.txt
-!/*/*/*.c
-!/*/*/*.vcproj
-!/*/*/*.suo
-!/*/*/*.sln
-!/*/*/Debug/*.exe
-!/*/*/Release/*.exe
+！*.txt
+！*.c
+！*.vcproj
+！*.suo
+！*.sln
+！/Debug/*.exe
+！/Release/*.exe
