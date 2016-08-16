@@ -1,4 +1,8 @@
-/code*/
+/.vs/*
+/Debug/*
+*.db
+*.filters
+*.vcxproj
 
 
 #from Windows-Progamming
