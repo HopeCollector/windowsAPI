@@ -136,3 +136,19 @@ return DefWindowProc(hwnd, iMsg, wParam, lParam);  //¶Ô´°¿Ú¹ý³ÌÃ»ÓÐ´¦ÀíµÄÏûÏ¢½øÐ
 *'WM_DESTORY'
  *ÓÃ»§¹Ø±Õ´°¿ÚÊ±³ÌÐò»á½Óµ½ÕâÌõÏûÏ¢
  *'PostQuitMessage(0)'½«Ò»Ìõ'WM_QUIT'ÏûÏ¢Ç¿ÐÐ²åÈë¡á¶ÓÁÐ£¬'GetMessage()'½«·µ»Ø0
+#3.2
+*WinMainÖ»°üº¬ÁË±ØÒªµÄÒ»²¿·Ö²Ù×÷£¬ÕæÕýµÄ²Ù×÷¶¼ÊÇÔÚWinProcÀïÊµÏÖµÄ
+*WindowsÍ¨¹ýµ÷ÓÃ´°¿Ú¹ý³ÌÀ´Ïò´°¿Ú·¢ÏûÏ¢£¬²¿·Öº¯ÊýÒ²¿ÉÒÔµ÷ÓÃWinProc£¨ÒÔÏûÏ¢µÄÐÎÊ½£©
+*ÒÔÏÂÇé¿öWinProc»á±»Windowsµ÷ÓÃ£¬ËùÓÐµ÷ÓÃ¶¼ÒÔÏûÏ¢ÐÎÊ½³öÏÖ 
+ *ÐÂ½¨´°¿Ú
+ *´°¿Ú±»×îÖÕÏú»Ù
+ *´°¿Ú³ß´ç·¢Éú±ä»¯£¨°üÀ¨×îÐ¡»¯£©
+ *Êó±êÔÚ´°¿ÚÖ´ÐÐµ¥»÷»òË«»÷
+ *¼üÅÌÏûÏ¢´«Èë
+ *Êó±ê²Ù×÷»òµ¥»÷¹ö¶¯Ìõ
+ *¿Í»§ÇøÐèÒªÖØ»æ
+*ÏûÏ¢·ÖÁ½ÖÖ
+ *¶ÓÁÐÏûÏ¢£¬½øÈëÏûÏ¢¶ÓÁÐµÈ´ý±»·Ö·¢µÄÏûÏ¢
+ *·Ç¶ÓÁÐÏûÏ¢£¬Ö±½Ó±»ËÍµ½WinProc½øÐÐ´¦Àí
+*ÏûÏ¢Ñ­»·Óë´°¿Ú¹ý³Ì²¢²»ÊÇ²¢·¢½øÐÐµÄ'DispatchMeaasge()'Ö´ÐÐÊ±¾Í»áµ÷ÓÃWinProc£¬µ±WinProc½«¿ØÖÆÈ¨·µ»Ø¸øWindowsÊ±'DispatchMessage()'²Å»á·µ»Ø
+*´°¿Ú¹ý³ÌÔÚ´¦ÀíÄ³Ò»ÏûÏ¢Ê±£¬³ÌÐò²»»á±»ÆäËûÏûÏ¢ÖÐ¶Ï
