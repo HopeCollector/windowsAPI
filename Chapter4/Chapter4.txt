@@ -112,6 +112,7 @@ case WM_SIZE:
 	* `iBar`告诉函数要设置什么方向的滚动条（两个参数`SB_VERT`和`SB_HORZ`）
 	* `iMin``iMax`是设置滚动条范围的，滚动条的位置是离散的整数值
 	* `bRedraw`调整滚动条后是否需要立即重绘（之后有其他调整滚动条的函数是最好别重绘，浪费！）
+	* 这个函数做出来的滚动条大小不能变.....
 * 确定好范围后要设定位置`SetScrollPos(hwnd, iBar, iPos, bRedraw)`
 	* `iPos`要在`iMin`和`iMax`之间
 * 使用`GetScrollRange(hwnd, iBar, lpMin, lpMax)`获取滚动条范围
@@ -130,3 +131,36 @@ Windows做的|程序做的
 	* `wParam`的低位字段是`SB_THUMBPOSITION`时，高位字段是用户松开鼠标时滑块的最终位置
 	* 处理`SB_THUMBTRACK`程序会在拖动滑块时移动客户区的内容
 	* 处理`SB_THUMBPOSITION`程序会在用户松开鼠标时更新客户区的内容
+**更牛逼的滚动条**
+* `SetScrollInfo(hwnd, iBar, PSSCROLLINFO, bRedraw)`做出来的滑块是可以改变大小的
+	* 滑块大小/滚动条长度=文档显示量/文档总大小=页面大小/范围（什么是范围）
+	* `PSSCROLLINFO`是结构体指针，指向`SCROLLINFO`
+```c
+typedef struct tagSCROLLINFO
+{
+    UINT    cbSize;
+    UINT    fMask;
+    int     nMin;
+    int     nMax;
+    UINT    nPage;
+    int     nPos;
+    int     nTrackPos;
+}   SCROLLINFO
+```
+	* `cdSize`标识该结构体的大小`sizeof(si)`，保持兼容性（怎么实现的）
+	* `fMask`位运算的标识符
+标识符 | SetScrollInfo | GetScrollInfo
+------- | ------------- | --------------
+SIF_RANGE | nMin和nMax指定滚动条范围 | nMin和nMax上返回滚动条范围
+SIF_POS | nPos指定滑块位置 | nPos返回滑块位置
+SIF_PAGE | nPage指定页面大小 | nPage返回页面大小
+SIF_TRACKPOS | 忽略 | nTrackPos返回当前滑块位置
+SIF_DISABLENOSCROLL | 禁用不需要的滚动条（但会显示出来） | 忽略
+SIF_ALL | 以上组合 | 以上组合
+**滚动条用到的函数**
+* `InvalidateRect()`使整个客户区无效
+* `UpdateWindow()`此函数将直接发送`WM_PAINT`消息到窗口过程
+* `ScrollWindow(hwnd, XAmount, YAmount, lpRect, lpClipRect)`用来滚动客户区，加快程序速度
+	* `XAmount`和`YAmount`指定滚动的像素个数
+	* `lpRect`指定滚动区域
+	* `lpClipRect`作用同上，只不过是坐标形式的
