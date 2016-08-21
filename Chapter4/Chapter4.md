@@ -118,12 +118,14 @@ case WM_SIZE:
 * 使用`GetScrollRange(hwnd, iBar, lpMin, lpMax)`获取滚动条范围
 * 使用`GetScrollPos(hwnd, iBar)`获取滚动条位置（是一个int型的返回值）
 * 滚动条的实现是程序和Windows这对cp共同的成果
-Windows做的|程序做的
---------------|---------
+
+Windows做的 | 程序做的
+----------- | -------
 处理滚动条中的鼠标信息 | 初始化滚动条的范围和位置
 提供单击滚动条时的反向闪烁 | 处理传送给窗口过程的滚动条信息
 用户拖拽滑块时在滚动条内移动滑块 | 更新滑块位置
 向相应的窗口过程发送滚动条消息 | 根据滚动条的变化更新客户区的内容
+
 **滚动条消息**
 * `WM_VSCROLL`, `WM_HOCROLL`，`lParam`不再像`WM_SIZE`里那样有用（在对话框中有用），反而是`wParam`更有用
 	* 低字段位代表鼠标在滚动条上的动作，按下时会发出多条消息（至少一条），松开时会发出另一条`SB_ENGSCROLL`
@@ -155,8 +157,8 @@ SIF_RANGE | nMin和nMax指定滚动条范围 | nMin和nMax上返回滚动条范围
 SIF_POS | nPos指定滑块位置 | nPos返回滑块位置
 SIF_PAGE | nPage指定页面大小 | nPage返回页面大小
 SIF_TRACKPOS | 忽略 | nTrackPos返回当前滑块位置
-SIF_DISABLENOSCROLL | 禁用不需要的滚动条（但会显示出来） | 忽略
 SIF_ALL | 以上组合 | 以上组合
+SIF_DISABLENOSCROLL | 禁用不需要的滚动条（但会显示出来） | 忽略
 **滚动条用到的函数**
 * `InvalidateRect()`使整个客户区无效
 * `UpdateWindow()`此函数将直接发送`WM_PAINT`消息到窗口过程
