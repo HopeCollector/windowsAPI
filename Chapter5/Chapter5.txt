@@ -104,6 +104,7 @@ PolyDraw(lpPoints, lpTypes, nCount) | 画多条贝塞尔样条曲线，或者多条折线
 	* 绘制模式
 * `MoveToEX(hdc, x, y, lpPoint)`改变当前位置，并且lpPoint将接收到之前位置的坐标，所有坐标都是32位的
 	* `GetCurrentPositionEX(hdc, lpPoint)`取得当前位置
+*  画圆曲线的方向是逆时针
 
 **面**
 
@@ -119,3 +120,56 @@ Chord(参数和上面两个一样) | 画出由弦割出的部分椭圆
 
 * 边界偏差：绘制函数给出的两点限制的边框内画矩形框
 * 对于`Pie` `Chord`  `Arc`指定的起始点不需要在矩形框里指定，Windows将绘制两点连线与椭圆相交两点间的图像
+
+**画笔**
+* 设备环境变量的默认画笔是`BLACK_PEN`
+	* Windows的备用画笔（stock pen）有三种`BLACK_PEN` `WHITE_PEN` `NULL_PEN`（什么也不画，怒刷存在感而已）
+	* `GetStockPen()`获取**备用画笔**句柄
+	* `SelectObject(hdc, hgobject)`把某个对象的句柄选入设备环境变量，将会返回之前被替换掉的那个对象的相应句柄（仅限于非Region对象）
+* `CreatePen(fnPenStyle, nWidth, crColor)`创建自己的画笔
+	* `fnPenStyle`画笔风格标识符
+
+标识符 | 含义
+------ | -----
+PS_SOLID | 实线
+PS_DASH | 短划线
+PS_DOT | 虚线
+PS_DASHDOT | 点划线
+PS_DASHDOTDOT | 两点一划
+PS_NULL | 什么也不画怒刷存在感
+PS_INSIDEFRAME | [框内实线](http://www.cnblogs.com/cgwolver/archive/2009/12/29/1635358.html)
+
+	* `nWidth`画笔宽度，设为0的话默认为1像素宽
+	* `crColor`选择画笔颜色
+	* `PS_INSIDEFRAME`宽度超过1时，允许使用抖动显示颜色
+* `CreatePenIndirect(LOGPEN *lplgpn)`和上面的作用一样，只不过是指针形式
+```c
+typedef struct tagLOGPEN {
+  UINT     lopnStyle;
+  POINT    lopnWidth;
+  COLORREF lopnColor;
+} LOGPEN
+```
+	* 三个字段和上面的没啥区别
+* `DeleteObject()`删除创建的GDI对象
+* `GetCurrentObject(hdc, uObjectType)`
+	* `uObjectType`标识符，标记要取得的对象
+
+标识符 | 含义
+------ | -----
+OBJ_BITMAP | 位图文件
+OBJ_BRUSH | 画刷
+OBJ_COLORSPACE | 色彩空间（这是啥）
+OBJ_FONT | 字体
+OBJ_PAL | 调色板
+OBJ_PEN | 画笔
+
+* `GetObject(hgdiobj, cbBuffer, lpvObject)`获取`hgdiobj`对象的详细信息
+	* `hgdiobj`是某一对象的句柄
+	* `cbBuffer`是用来接受信息变量的大小
+	* `lpvObject`用来接收信息的变量，必须强制转换成（LPVOID)类型的才可以
+* 虚线类型的画笔空隙使用`wndclass`的背景色填充
+	* `SetBKColor(hdc, crColor)`可以改变填充色
+	* `SetBKMode(hdc, nBKMode)`设定填充模式
+		* `OPAQUE`不透明
+		* `TRANSPARENT`透明
