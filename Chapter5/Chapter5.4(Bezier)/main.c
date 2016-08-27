@@ -1,5 +1,5 @@
 #include <Windows.h>
-#define NUM 100
+#define NUM 10000
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 void Bezier(HDC hdc, POINT apt[]);
@@ -131,8 +131,8 @@ void Bezier(HDC hdc, POINT apt[])
 void MyPolyBezier(HDC hdc, POINT apt[], int cp)
 {
 	POINT aptm[NUM];
-	POINT aptt[NUM -1];
 	POINT pt;
+	double t;
 	int i;
 	switch (cp)
 	{
@@ -143,17 +143,20 @@ void MyPolyBezier(HDC hdc, POINT apt[], int cp)
 		break;
 
 	case 4:
-		for (i = 1; i < NUM ; i++)  // 当1/i接近1时得出来的结果变化也来越小，导致画出来的线越来越像直线，但是按照c语言的除法规则，得到的结果就是直线！
+		for (i = 1; i < NUM; i++)  // 当1/i接近1时得出来的结果变化也来越小，导致画出来的线越来越像直线，但是按照c语言的除法规则，得到的结果就是直线！
 		{
-			aptm[i].x = (1.0 - 1.0 / i)*(1.0 - 1.0 / i)*(1.0 - 1.0 / i) * apt[3].x + 1.0 / i * (1.0 - 1.0 / i)*(1.0 - 1.0 / i) * 3 * apt[2].x + 3.0 / i / i * (1.0 - 1.0 / i) * apt[1].x + 1.0 / i / i / i * apt[0].x;
-			aptm[i].y = (1.0 - 1.0 / i)*(1.0 - 1.0 / i)*(1.0 - 1.0 / i) * apt[3].y + 1.0 / i * (1.0 - 1.0 / i)*(1.0 - 1.0 / i) * 3 * apt[2].y + 3.0 / i / i * (1.0 - 1.0 / i) * apt[1].y + 1.0 / i / i / i * apt[0].y;
+			t = 1.0 * i / NUM;
+			aptm[i].x = (1.0 - t)*(1.0 - t)*(1.0 - t) * apt[0].x + t * (1.0 - t)*(1.0 - t) * 3 * apt[1].x + 3.0 * t * t * (1.0 - t) * apt[2].x + t * t * t * apt[3].x;
+			aptm[i].y = (1.0 - t)*(1.0 - t)*(1.0 - t) * apt[0].y + t * (1.0 - t)*(1.0 - t) * 3 * apt[1].y + 3.0 * t * t * (1.0 - t) * apt[2].y + t * t * t * apt[3].y;
 		}
 
-		for (i = 0; i < NUM - 1; i++)
-		{
-			aptt[i] = aptm[i + 1];
-		}
-		Polyline(hdc, aptt, NUM - 1);
+		aptm[0].x = apt[0].x;
+		aptm[0].y = apt[0].y;
+
+		aptm[NUM - 1].x = apt[3].x;
+		aptm[NUM - 1].y = apt[3].y;
+
+		Polyline(hdc, aptm, NUM);
 		break;
 	}
 }
