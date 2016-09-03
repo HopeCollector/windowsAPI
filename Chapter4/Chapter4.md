@@ -127,6 +127,7 @@ Windows做的 | 程序做的
 向相应的窗口过程发送滚动条消息 | 根据滚动条的变化更新客户区的内容
 
 **滚动条消息**
+
 * `WM_VSCROLL`, `WM_HOCROLL`，`lParam`不再像`WM_SIZE`里那样有用（在对话框中有用），反而是`wParam`更有用
 	* 低字段位代表鼠标在滚动条上的动作，按下时会发出多条消息（至少一条），松开时会发出另一条`SB_ENGSCROLL`
 	* 拖动滑块时会发出`SB_THUMBTRACK`消息（`wParam`的低位字段），这时高位字段是 **滑块的当前位置**
@@ -151,6 +152,7 @@ typedef struct tagSCROLLINFO
 ```
 	* `cdSize`标识该结构体的大小`sizeof(si)`，保持兼容性（怎么实现的）
 	* `fMask`位运算的标识符
+
 标识符 | SetScrollInfo | GetScrollInfo
 ------- | ------------- | --------------
 SIF_RANGE | nMin和nMax指定滚动条范围 | nMin和nMax上返回滚动条范围
@@ -159,7 +161,9 @@ SIF_PAGE | nPage指定页面大小 | nPage返回页面大小
 SIF_TRACKPOS | 忽略 | nTrackPos返回当前滑块位置
 SIF_ALL | 以上组合 | 以上组合
 SIF_DISABLENOSCROLL | 禁用不需要的滚动条（但会显示出来） | 忽略
+
 **滚动条用到的函数**
+
 * `InvalidateRect()`使整个客户区无效
 * `UpdateWindow()`此函数将直接发送`WM_PAINT`消息到窗口过程
 * `ScrollWindow(hwnd, XAmount, YAmount, lpRect, lpClipRect)`用来滚动客户区，加快程序速度
