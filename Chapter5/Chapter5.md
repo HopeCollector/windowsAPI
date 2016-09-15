@@ -211,9 +211,8 @@ BS_DIBPATTERNPT | 忽略 | 指向DIB的指针
 * `SetMapMode(hdc, iMapMode)`设置映射模式
 	* 对应的还有`iMapMode = GetMapMode(hdc)`用来获取当前映射模式
 
-映射模式 | 逻辑单位 | 值增加方向
-                               | x轴 | y轴 
---------- | --------- | --- | ----
+映射模式 | 逻辑单位 | x轴 | y轴 
+--------- | ------ | --- | ---
 MM_TEXT | 像素 | 右 | 下
 MM_LOMETRIC | 0.1mm | 右 | 上
 MM_HIMETRIC | 0.01mm | 右 | 上
